@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -11,8 +11,6 @@ import {
   setLoading as setBrandsLoading,
   setError as setBrandsError,
 } from "../../store/brandsSlice";
-
-import "./Aside.css";
 
 export default function Aside({
   selectedBrand,
@@ -81,49 +79,57 @@ export default function Aside({
   }, [dispatch]);
 
   return (
-    <aside>
-      Aside
-      <h2>Brands</h2>
-      {brandsLoading && <div className='loading'>Brands loading...</div>}
-      {brandsError && <div className='error'>{brandsError}</div>}
-      <ul className='brands-wrapper'>
-        {brandsList.map((brand, index) => (
-          <li key={`${brand + index}`}>
+    <aside className="p-4 bg-base-100 shadow-md rounded-lg">
+      <h2 className="text-lg font-semibold mb-2">Brands</h2>
+      {brandsLoading && <div className="text-gray-500">Brands loading...</div>}
+      {brandsError && <div className="text-red-500">{brandsError}</div>}
+      <ul className="space-y-2">
+        {brandsList.map((brand) => (
+          <li key={brand} className="flex items-center space-x-2">
             <input
-              type='radio'
+              type="radio"
               id={brand}
-              name={"brand"}
+              name="brand"
+              className="radio"
               onChange={() => setSelectedBrand(brand)}
               checked={selectedBrand === brand}
             />
-            <label htmlFor={brand}>{brand}</label>
+            <label htmlFor={brand} className="text-gray-700">
+              {brand}
+            </label>
           </li>
         ))}
       </ul>
-      <button onClick={() => setSelectedBrand("")}>Reset</button>
-      <h2>Colors</h2>
-      {colorsLoading && <div className='loading'>Colors loading...</div>}
-      {colorsError && <div className='error'>{colorsError}</div>}
-      <ul className='colors-wrapper'>
-        {colorsList.map((color, index) => (
-          <li key={`${color + index}`}>
+      <button
+        onClick={() => setSelectedBrand("")}
+        className="btn btn-secondary mt-2"
+      >
+        Reset
+      </button>
+
+      <h2 className="text-lg font-semibold mt-4 mb-2">Colors</h2>
+      {colorsLoading && <div className="text-gray-500">Colors loading...</div>}
+      {colorsError && <div className="text-red-500">{colorsError}</div>}
+      <ul className="flex flex-wrap gap-2 mt-2">
+        {colorsList.map((color) => (
+          <li key={color}>
             <button
               onClick={() => setSelectedColor(color)}
-              style={{
-                width: "20px",
-                height: "20px",
-                borderRadius: "50%",
-                border: "1px solid",
-                backgroundColor: color,
-                cursor: "pointer",
-                outlineOffset: "2px",
-                outline: selectedColor === color ? `1px solid red` : "",
-              }}
+              className={`w-8 h-8 rounded-full border ${
+                selectedColor === color ? "border-red-500" : "border-gray-300"
+              }`}
+              style={{ backgroundColor: color }}
+              aria-label={`Select color ${color}`}
             ></button>
           </li>
         ))}
       </ul>
-      <button onClick={() => setSelectedColor("")}>Reset</button>
+      <button
+        onClick={() => setSelectedColor("")}
+        className="btn btn-secondary mt-2"
+      >
+        Reset
+      </button>
     </aside>
   );
 }

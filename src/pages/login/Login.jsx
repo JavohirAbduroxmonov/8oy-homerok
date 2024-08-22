@@ -1,6 +1,4 @@
 import { useState } from "react";
-
-import style from "./Login.module.scss";
 import { useDispatch } from "react-redux";
 import { addUser, setUserError } from "../../store/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -8,11 +6,9 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   async function handleSubmit(e) {
@@ -43,35 +39,49 @@ export default function Login() {
   }
 
   return (
-    <div className={style.login}>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div className={style["form-control"]}>
-          <label htmlFor='username'>Username</label>
-          <input
-            id='username'
-            type='text'
-            placeholder='username'
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-          />
-        </div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
+        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="form-control">
+            <label htmlFor="username" className="label">
+              <span className="label-text">Username</span>
+            </label>
+            <input
+              id="username"
+              type="text"
+              placeholder="Enter your username"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              className="input input-bordered w-full"
+              required
+            />
+          </div>
 
-        <div className={style["form-control"]}>
-          <label htmlFor='password'>Password</label>
-          <input
-            id='password'
-            type='password'
-            placeholder='Password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+          <div className="form-control">
+            <label htmlFor="password" className="label">
+              <span className="label-text">Password</span>
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input input-bordered w-full"
+              required
+            />
+          </div>
 
-        <button disabled={!(userName && password) || loading}>
-          {loading ? "In process..." : "Login"}
-        </button>
-      </form>
+          <button
+            type="submit"
+            className={`btn btn-primary w-full ${loading ? "loading" : ""}`}
+            disabled={!(userName && password) || loading}
+          >
+            {loading ? "Processing..." : "Login"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
